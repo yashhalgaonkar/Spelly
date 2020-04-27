@@ -95,6 +95,11 @@ int main()
 			cout<<"Number of words spelled incorrectly: "<<result<<endl;
 			result = 0;
 		}
+		else
+		{
+			//all the words are spelled correctly
+			cout << "No misspelled words!!\n" << endl;
+		}
  
 		// ask for more data
 		cout<<"\nDo you want to enter another sentence? (y/n): ";
