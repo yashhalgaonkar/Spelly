@@ -40,7 +40,7 @@ int main()
 	HashTable<string> hashTable(TABLE_SIZE);
  
 	// open the dictionary file
-	infile.open("INPUT_Dictionary_programmingnotes_freeweq_com.txt");
+	infile.open("INPUT_Dictionary.txt");
  
 	// check if the file exists, EXIT if it doesnt
 	if(infile.fail())
