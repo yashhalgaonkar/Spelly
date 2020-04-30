@@ -62,7 +62,8 @@ int main()
 		}
 	}	
 	infile.close();
-	PrintTableStats(hashTable);	
+
+	
  
 	end = clock()-beg; // end the timer
 	cout<<"\n\nDictionary loaded in "<<
@@ -98,7 +99,7 @@ int main()
 		else
 		{
 			//all the words are spelled correctly
-			cout << "No misspelled words!!\n" << endl;
+			cout << "No misspelled words!!" << endl;
 		}
  
 		// ask for more data
@@ -107,60 +108,12 @@ int main()
 		cin.ignore(numeric_limits<streamsize>::max(),'\n'); // clear the cin buffer
 	}while(toupper(response)=='Y');
  
-	cout<<"nBYE!!n";
+	cout<<"\nBYE!!\n";
  
 	return 0;
 }// end of main
  
-void PrintTableStats(HashTable<string>& hashTable)
-{
-	int largestBucket = -9999999;
-	int largestIndex = 0;
-	int smallestBucket = 9999999;
-	int smallestIndex = 0;
-	double numBuckestUsed = 0;
-	ofstream outfile("OUTPUT_HashTable_Stats_programmingnotes_freeweq_com.txt");
-	
-	for(int x=0; x < hashTable.TableSize(); ++x)
-	{
-		// iterator is used to traverse each hashtable bucket
-		iterDec it = hashTable.begin(x);
-		if(!hashTable.IsEmpty(x))
-		{
-			if(smallestBucket > hashTable.BucketSize(x))
-			{
-				smallestBucket = hashTable.BucketSize(x);
-				smallestIndex = x;
-			}
-			if(largestBucket < hashTable.BucketSize(x))
-			{
-				largestBucket = hashTable.BucketSize(x);
-				largestIndex = x;
-			}
-			++numBuckestUsed;
-			outfile<<"nBucket #"<<x<<":\n";
-			for(int y = 0; y < hashTable.BucketSize(x); ++y)
-			{
-				outfile <<"\t"<< it[y] << endl;
-			}
-		}
-	}
-	cout<<"Complete!n";
- 
-	// creates a line separator
-	cout<<endl;
-	cout.fill('-');
-	cout<<left<<setw(50)<<""<<endl;
- 
-	cout<<"Total dictionary words = "<<hashTable.TotalElems()<<endl
-		<<"Hash table size = "<<hashTable.TableSize()<<endl
-		<<"Largest bucket size = "<<largestBucket<< " items at index #"<<largestIndex<<endl
-		<<"Smallest bucket size = "<<smallestBucket<< " items at index #"<<smallestIndex<<endl
-		<<"Total buckets used = "<<numBuckestUsed<<endl
-		<<"Total percent of hash table used = "<<(numBuckestUsed/hashTable.TableSize())*100<<"%"<<endl
-		<<"Average bucket size = "<<(hashTable.TotalElems()/numBuckestUsed)<<" items";
-}// end of PrintTableStats
- 
+
 int SpellCheck(HashTable<string>& hashTable, string word)
 {	
 	int result = 0;

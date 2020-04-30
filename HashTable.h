@@ -122,6 +122,7 @@ int HashTable<ItemType>::Hash(ItemType newItem)
  
 	for(unsigned x=0; x < temp.length(); ++x)
 	{
+		//hash funtion
 		h = (h << 6) ^ (h >> 26) ^ temp[x];
 	}
 	return abs(h % hashSize);
@@ -214,55 +215,7 @@ bool HashTable<ItemType>::Remove(ItemType deleteItem, int key)
 	return isFound;
 }/* End of Remove */
  
-template<class ItemType>
-void HashTable<ItemType>::Sort(int key)
-{		
-    if(IsEmpty(key))
-    {
-        //std::cout<<"nSORT ERROR - HASH TABLE EMPTYn";
-    }
-    else
-    { 
-        int listSize = BucketSize(key);
-        bool sorted = false;
- 
-        do{
-            sorted = true;
-            int x = 0;
-            for(node* tempPtr = head[key];
-                tempPtr->next!=NULL && x < listSize-1;
-                tempPtr=tempPtr->next,++x)
-            {
-                if(tempPtr-> currentItem > tempPtr->next->currentItem)
-                {
-                    ItemType temp = tempPtr-> currentItem;
-                    tempPtr-> currentItem = tempPtr->next->currentItem;
-                    tempPtr->next->currentItem = temp;
-                    sorted = false;
-                }
-            }
-            --listSize;
-        }while(!sorted);
-    }
-}/* End of Sort */
- 
-template<class ItemType>
-int HashTable<ItemType>::TableSize()
-{
-    return hashSize;
-}/* End of TableSize */
- 
-template<class ItemType>
-int HashTable<ItemType>::TotalElems()
-{
-    return totElems;
-}/* End of TotalElems */
- 
-template<class ItemType>
-int HashTable<ItemType>::BucketSize(int key)
-{
-	return(!IsEmpty(key)) ? bucketSize[key]:0;
-}/* End of BucketSize */
+
  
 template<class ItemType>
 int HashTable<ItemType>::Count(ItemType searchItem) 
@@ -286,6 +239,7 @@ int HashTable<ItemType>::Count(ItemType searchItem)
     }
 	return search;
 }/* End of Count */
+ 
  
 template<class ItemType>
 void HashTable<ItemType>::MakeEmpty()
@@ -316,112 +270,4 @@ HashTable<ItemType>::~HashTable()
 	delete[] bucketSize;
 }/* End of ~HashTable */
  
-
- 
-template <class ItemType>
-class HashTable<ItemType>::Iterator :
-		public std::iterator<std::forward_iterator_tag,ItemType>,
-		public HashTable<ItemType>
-	{
-public:
-	// Iterator constructor
-	Iterator(node* otherIter = NULL)
-	{		
-		itHead = otherIter;
-	}
-	~Iterator() {}
-	// The assignment and relational operators are straightforward
-	Iterator& operator=(const Iterator& other)
-	{
-		itHead = other.itHead;
-		return(*this);
-	}
-	bool operator==(const Iterator& other)const
-	{
-		return itHead == other.itHead;
-	}
-	bool operator!=(const Iterator& other)const
-	{
-		return itHead != other.itHead;
-	}
-	bool operator<(const Iterator& other)const
-	{
-		return itHead < other.itHead;
-	}
-	bool operator>(const Iterator& other)const
-	{
-		return other.itHead < itHead;
-	}
-	bool operator<=(const Iterator& other)const
-	{
-		return (!(other.itHead < itHead));
-	}
-	bool operator>=(const Iterator& other)const
-	{
-		return (!(itHead < other.itHead));
-	}
-	// Update my state such that I refer to the next element in the
-	// HashTable.
-	Iterator operator+(int incr)
-	{
-		node* temp = itHead;
-		for(int x=0; x < incr && temp!= NULL; ++x)
-		{
-			temp = temp->next;
-		}
-		return temp;
-	}
-	Iterator operator+=(int incr)
-	{
-		for(int x=0; x < incr && itHead!= NULL; ++x)
-		{
-			itHead = itHead->next;
-		}
-		return itHead;
-	}
-	Iterator& operator++() // pre increment
-	{	
-		if(itHead != NULL)
-		{
-			itHead = itHead->next;			
-		}
-		return(*this);
-	}
-	Iterator operator++(int) // post increment
-	{
-		node* temp = itHead;
-		this->operator++();
-		return temp;
-	}
-	ItemType& operator[](int incr)
-	{
-		// Return "junk" data 
-		// to prevent the program from crashing
-		if(itHead == NULL || (*this + incr) == NULL)
-		{			 
-			return junk;
-		}
-		return(*(*this + incr));
-	}
-	// Return a reference to the value in the node.  I do this instead
-	// of returning by value so a caller can update the value in the
-	// node directly.
-	ItemType& operator*()
-	{
-		// Return "junk" data 
-		// to prevent the program from crashing
-		if(itHead == NULL)
-		{
-			return junk;
-		}
-		return itHead->currentItem;		
-	}	
-	ItemType* operator->()
-	{
-		return(&**this);
-	}
-private:
-	node* itHead;
-	ItemType junk;
-}; 
 #endif 
