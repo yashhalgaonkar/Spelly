@@ -13,9 +13,7 @@
 #include "HashTable.h"
 using namespace std;
  
-// iterator declaration for hash table
-typedef HashTable<string>::Iterator iterDec;
- 
+
 // hash table size
 const int TABLE_SIZE = 19000;
  
@@ -23,7 +21,6 @@ const int TABLE_SIZE = 19000;
 const char* DELIMITERS = " ,.-\':;?()+*/\\%$#!\"@\^&";
  
 // functions
-void PrintTableStats(HashTable<string>& hashTable);
 int SpellCheck(HashTable<string>& hashTable, string word);
 string ToLowerCase(string word);
  
@@ -124,8 +121,10 @@ int SpellCheck(HashTable<string>& hashTable, string word)
 	if(!hashTable.Count(word))
 	{
 		++result;
-		cout<<"** "<<word<<": ";			
+		cout<<"** "<<word<<": ";
+					
 		// alteration & insertion
+		//time complexity - n*26 ~ n
 		for(unsigned x = 0; x < word.length(); ++x)
 		{		
 			string alteration = word;
@@ -154,6 +153,7 @@ int SpellCheck(HashTable<string>& hashTable, string word)
 			}
 		}
 		// transposition & deletion	
+		//time complexity - n
 		for(unsigned x = 0; x < word.length()-1;++x) 
 		{
 			// transposition 

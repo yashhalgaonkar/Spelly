@@ -2,8 +2,8 @@
 //     Description: This is a class which implements various functions which 
 //          demonstrates the use of a Hash Table. 
 // ============================================================================
-#ifndef TEMPLATE_HASH_TABLE
-#define TEMPLATE_HASH_TABLE
+
+
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -30,31 +30,13 @@ public:
 	void Append(int key, ItemType newItem);
 		
 	bool Remove(ItemType deleteItem, int key = -1);
-		
-	void Sort(int key);
-		
-	int TableSize();
-		
-	int TotalElems();
-		
-	int BucketSize(int key);
-		
+			
 	int Count(ItemType searchItem);
 		
 	void MakeEmpty();
 		
 	~HashTable();
-		
-	
-	//  -- ITERATOR CLASS --
-	class Iterator;
-		
- 
-	Iterator begin(int key){return(!IsEmpty(key)) ? head[key]:NULL;}
-		
- 
-	Iterator end(int key=0){return NULL;}
-		
+
 	
 private:
 	struct node	
@@ -112,17 +94,18 @@ bool HashTable<ItemType>::IsFull()
 template<class ItemType>
 int HashTable<ItemType>::Hash(ItemType newItem)
 {	
+	//mersenne prime
 	long h = 19937;
 	std::stringstream convert;
  
 	// convert the parameter to a string using "stringstream" which is done
-	// so we can hash multiple datatypes using only one function
 	convert << newItem;
 	std::string temp = convert.str();
  
 	for(unsigned x=0; x < temp.length(); ++x)
 	{
 		//hash funtion
+		//mersenne twister 
 		h = (h << 6) ^ (h >> 26) ^ temp[x];
 	}
 	return abs(h % hashSize);
@@ -216,7 +199,6 @@ bool HashTable<ItemType>::Remove(ItemType deleteItem, int key)
 }/* End of Remove */
  
 
- 
 template<class ItemType>
 int HashTable<ItemType>::Count(ItemType searchItem) 
 {
@@ -228,7 +210,8 @@ int HashTable<ItemType>::Count(ItemType searchItem)
         //std::cout<<"nCOUNT ERROR - HASH TABLE EMPTYn";
     }
     else
-    {        		
+    {   
+		//linear search     		
         for(node* tempPtr = head[key];tempPtr!=NULL;tempPtr=tempPtr->next)
         {
             if(tempPtr->currentItem == searchItem)
@@ -240,7 +223,7 @@ int HashTable<ItemType>::Count(ItemType searchItem)
 	return search;
 }/* End of Count */
  
- 
+
 template<class ItemType>
 void HashTable<ItemType>::MakeEmpty()
 {
@@ -270,4 +253,3 @@ HashTable<ItemType>::~HashTable()
 	delete[] bucketSize;
 }/* End of ~HashTable */
  
-#endif 
